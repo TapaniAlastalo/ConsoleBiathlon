@@ -1,0 +1,3 @@
+﻿  ConsoleBiathlon.cpp
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\consolebiathlon.cpp(460): warning C4101: 'iRand': unreferenced local variable
+  ConsoleBiathlon.vcxproj -> D:\Koodaus\Microsoft Visual Studio\Repos\ConsoleBiathlon\Debug\ConsoleBiathlon.exe
