@@ -1,3 +1,7 @@
 ﻿  ConsoleBiathlon.cpp
-d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\consolebiathlon.cpp(467): warning C4101: 'iRand': unreferenced local variable
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\consolebiathlon.cpp(426): warning C4018: '<': signed/unsigned mismatch
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\consolebiathlon.cpp(429): warning C4018: '<': signed/unsigned mismatch
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\consolebiathlon.cpp(434): warning C4018: '<': signed/unsigned mismatch
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\consolebiathlon.cpp(437): warning C4018: '<': signed/unsigned mismatch
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\consolebiathlon.cpp(528): warning C4101: 'iRand': unreferenced local variable
   ConsoleBiathlon.vcxproj -> D:\Koodaus\Microsoft Visual Studio\Repos\ConsoleBiathlon\Debug\ConsoleBiathlon.exe
