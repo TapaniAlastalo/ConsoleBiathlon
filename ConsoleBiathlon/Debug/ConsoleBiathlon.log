@@ -1,7 +1,18 @@
-﻿  ConsoleBiathlon.cpp
-d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\consolebiathlon.cpp(426): warning C4018: '<': signed/unsigned mismatch
-d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\consolebiathlon.cpp(429): warning C4018: '<': signed/unsigned mismatch
-d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\consolebiathlon.cpp(434): warning C4018: '<': signed/unsigned mismatch
-d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\consolebiathlon.cpp(437): warning C4018: '<': signed/unsigned mismatch
-d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\consolebiathlon.cpp(528): warning C4101: 'iRand': unreferenced local variable
-  ConsoleBiathlon.vcxproj -> D:\Koodaus\Microsoft Visual Studio\Repos\ConsoleBiathlon\Debug\ConsoleBiathlon.exe
+﻿  ScreenUpdater.cpp
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\screenupdater.cpp(387): warning C4018: '<': signed/unsigned mismatch
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\screenupdater.cpp(390): warning C4018: '<': signed/unsigned mismatch
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\screenupdater.cpp(395): warning C4018: '<': signed/unsigned mismatch
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\screenupdater.cpp(398): warning C4018: '<': signed/unsigned mismatch
+  StartScreen.cpp
+  TempPlay.cpp
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\tempplay.cpp(547): warning C4101: 'iRand': unreferenced local variable
+  Generating Code...
+TempPlay.obj : error LNK2005: "int shootings" (?shootings@@3HA) already defined in ScreenUpdater.obj
+TempPlay.obj : error LNK2005: "int playerX" (?playerX@@3HA) already defined in ScreenUpdater.obj
+TempPlay.obj : error LNK2005: "int playerY" (?playerY@@3HA) already defined in ScreenUpdater.obj
+TempPlay.obj : error LNK2005: "char (* gameScreen)[100]" (?gameScreen@@3PAY0GE@DA) already defined in ScreenUpdater.obj
+TempPlay.obj : error LNK2005: "char cPlayer" (?cPlayer@@3DA) already defined in ScreenUpdater.obj
+TempPlay.obj : error LNK2005: "bool shootFromHipAllowed" (?shootFromHipAllowed@@3_NA) already defined in ScreenUpdater.obj
+TempPlay.obj : error LNK2005: "bool finished" (?finished@@3_NA) already defined in ScreenUpdater.obj
+TempPlay.obj : error LNK2005: "struct shootingEntity * shootingList" (?shootingList@@3PAUshootingEntity@@A) already defined in ScreenUpdater.obj
+D:\Koodaus\Microsoft Visual Studio\Repos\ConsoleBiathlon\Debug\ConsoleBiathlon.exe : fatal error LNK1169: one or more multiply defined symbols found
