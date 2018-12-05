@@ -52,6 +52,22 @@ __int64 TimeHandler::getDifferenceInMillis() {
 }
 
 /**
+* Get difference between start time and current time in seconds.
+* Timer will not be stopped by this.
+*/
+__int64 TimeHandler::getInterval() {
+	return ((epoch() - startTime) / 1000);
+}
+
+/**
+* Get difference between start time and current time in milliseconds.
+* Timer will not be stopped by this.
+*/
+__int64 TimeHandler::getIntervalInMillis() {
+	return (epoch() - startTime);
+}
+
+/**
 * Get epoch time in milliseconds.
 */
 __int64 TimeHandler::epoch() {

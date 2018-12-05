@@ -3,16 +3,8 @@
 
 using namespace std;
 
-void start(void);
-void newGame(void);
-int play(void);
+void startScreen(void);
 
-
-void start() {
-	//setlocale(LC_ALL, "finnish");
-	newGame();
+void startScreen() { // show start screen
 }
 
-void newGame() {
-	play();
-}

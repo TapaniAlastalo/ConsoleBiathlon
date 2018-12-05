@@ -6,7 +6,6 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-#include "TimeHandler.h"
 
 const char cHipHit = 'B';
 const char cHit = 'O';
@@ -66,6 +65,13 @@ struct playerEntity {
 	int posY;
 };
 
+struct scoreEntity {
+	__int64 time;
+	int bonuses;
+	int hits;
+	int misses;
+};
+
 struct levelEntity {
 	int sizeX;
 	int sizeY;
@@ -73,6 +79,7 @@ struct levelEntity {
 	int shootings;
 	bool finished;
 	playerEntity player;
+	scoreEntity score;
 	shootingEntity shootingList [MAX_SHOOTINGS];
 };
 #endif //HEADER_H

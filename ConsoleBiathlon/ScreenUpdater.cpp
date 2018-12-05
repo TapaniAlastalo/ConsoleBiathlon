@@ -68,17 +68,19 @@ void populateSky(levelEntity *level) {
 
 void populateBackground(levelEntity *level) {
 	levelEntity game = *level;
-	// populate poles and roofs
+	// populate background this and that	
 	for (int i = 0; i < game.sizeY; i++) {
-		if (i == 1) {
+		if (i == 1) { // populate buildings
+			gameScreen[game.trackX - 2][i] = cSlash;
 			gameScreen[game.trackX - 1][i] = cPole;
-		}
-		else if (i == 3 || i == 6) {
-			gameScreen[game.trackX - 1][i] = cPole;
-			gameScreen[game.trackX - 2][i] = cPole;
 		}
 		else if (i == 2) {
 			gameScreen[game.trackX - 3][i] = cTop;
+		}
+		else if (i == 3) {
+			gameScreen[game.trackX - 2][i] = cBackSlash;
+			gameScreen[game.trackX - 3][i] = cSlash;
+			gameScreen[game.trackX - 1][i] = cPole;
 		}
 		else if (i == 4) {
 			gameScreen[game.trackX - 4][i] = cTop;
@@ -86,20 +88,11 @@ void populateBackground(levelEntity *level) {
 		else if (i == 5) {
 			gameScreen[game.trackX - 4][i] = cTop;
 		}
-	}
-	// populate slashes
-	for (int i = 0; i < game.sizeY; i++) {
-		if (i == 1) { // buildings
-			gameScreen[game.trackX - 2][i] = cSlash;
-		}
-		else if (i == 3) {
-			gameScreen[game.trackX - 2][i] = cBackSlash;
-			gameScreen[game.trackX - 3][i] = cSlash;
-		}
 		else if (i == 6) {
 			gameScreen[game.trackX - 3][i] = cBackSlash;
+			gameScreen[game.trackX - 2][i] = cPole;
 		}
-		else if (i == 12) { // forest
+		else if (i == 12) { // tree
 			gameScreen[game.trackX - 1][i] = cSlash;
 			gameScreen[game.trackX - 2][i] = cSlash;
 		}
@@ -107,7 +100,7 @@ void populateBackground(levelEntity *level) {
 			gameScreen[game.trackX - 1][i] = cBackSlash;
 			gameScreen[game.trackX - 2][i] = cBackSlash;
 		}
-		else if (i == 25) { // forest
+		else if (i == 25) { // big forest
 			gameScreen[game.trackX - 1][i] = cSlash;
 			gameScreen[game.trackX - 2][i] = cSlash;
 		}
@@ -155,7 +148,7 @@ void populateBackground(levelEntity *level) {
 			gameScreen[game.trackX - 2][i] = cBackSlash;
 			gameScreen[game.trackX - 3][i] = cBackSlash;
 		} // spectator areas
-		else if (i == 67 || i == 75) {
+		else if (i == 67 || i == 75) { // long specator area
 			gameScreen[game.trackX - 1][i] = cSlash;
 			gameScreen[game.trackX - 2][i + 1] = cSlash;
 		}
@@ -169,7 +162,7 @@ void populateBackground(levelEntity *level) {
 		else if ((i > 68 && i < 74) || (i > 76 && i < 82)) {
 			gameScreen[game.trackX - 3][i] = cTop;
 		}
-		else if (i == 91) {
+		else if (i == 91) {// short specator area
 			gameScreen[game.trackX - 1][i] = cSlash;
 			gameScreen[game.trackX - 2][i + 1] = cSlash;
 		}
@@ -423,6 +416,18 @@ void printScreen(levelEntity *level) {
 			cout << gameScreen[i][j];
 		}
 		cout << endl;
+	}
+	cout << endl << "Move using the arrow keys (>>, up-up, down-down), Quit ESC " << endl;
+}
+
+void clearGameScreen(levelEntity *level) {
+	levelEntity game = *level;
+	for (int i = 0; i < game.sizeX; ++i)
+	{
+		for (int j = 0; j < game.sizeY; ++j)
+		{
+			gameScreen[i][j] = cEmpty;
+		}
 	}
 }
 

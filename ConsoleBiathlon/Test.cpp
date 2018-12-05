@@ -80,3 +80,14 @@ void pause() {
 	cout << endl << "Press ESC to go forward" << endl;
 	while (_getch() != 27);	// stop
 }
+
+void pause(string output) {
+	cout << endl << output << endl;
+	while (_getch() != 27);	// stop
+}
+
+void pause(string output, string TAG) {
+	cout << endl << TAG << endl;
+	cout << endl << output << endl;
+	while (_getch() != 27);	// stop
+}

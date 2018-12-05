@@ -18,5 +18,7 @@ void testOutput(int);
 void testOutput(int, std::string);
 
 void pause(void);
+void pause(std::string);
+void pause(std::string, std::string);
 
 #endif //TESTHEADER_H

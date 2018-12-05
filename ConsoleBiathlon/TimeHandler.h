@@ -14,6 +14,8 @@ public:
 	__int64 end();
 	__int64 getDifference();
 	__int64 getDifferenceInMillis();
+	__int64 getInterval();
+	__int64 getIntervalInMillis();
 	__int64 epoch();
 };
 #endif
