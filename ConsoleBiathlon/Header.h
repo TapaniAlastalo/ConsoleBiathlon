@@ -70,13 +70,9 @@ struct levelEntity {
 	int sizeX;
 	int sizeY;
 	int trackX;
-	char screen[MAX_SIZE_X][MAX_SIZE_Y];
 	int shootings;
 	bool finished;
 	playerEntity player;
 	shootingEntity shootingList [MAX_SHOOTINGS];
 };
-
-//int checkInteger(std::string);
-
 #endif //HEADER_H

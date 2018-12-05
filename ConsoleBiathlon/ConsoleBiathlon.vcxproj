@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClInclude Include="Header.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="TestHeader.h" />
     <ClInclude Include="TimeHandler.h" />
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +167,7 @@
     <ClCompile Include="ScreenUpdater.cpp" />
     <ClCompile Include="StartScreen.cpp" />
     <ClCompile Include="TempPlay.cpp" />
+    <ClCompile Include="Test.cpp" />
     <ClCompile Include="TimeHandler.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
