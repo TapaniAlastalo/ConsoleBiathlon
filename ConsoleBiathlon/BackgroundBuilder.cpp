@@ -3,46 +3,166 @@
 #include "header.h"
 #include "TestHeader.h"
 
+using namespace std;
+
 int bigForrestPosY;
+spaceForBackgroundItem spaceList[MAX_SHOOTINGS+1];
 
 char getSpectator(levelEntity*);
 char getFlag(levelEntity*);
 
-void addTree(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y], int);
-void addHouses(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y], int);
-void addWarehouse(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y], int);
-void addForrest(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y], int);
-void addBigForrest(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y], int);
-void addSpectatorArea(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y], int);
-void addBigSpectatorArea(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y], int);
+int addTree(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y], int);
+int addHouses(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y], int);
+int addWarehouse(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y], int);
+int addForrest(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y], int);
+int addBigForrest(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y], int);
+int addSpectatorArea(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y], int);
+int addBigSpectatorArea(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y], int);
 
 void generateSky(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y]);
 void generateGround(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y]);
 void populateForeground(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y]);
 void populateAds(levelEntity*, char(&)[MAX_SIZE_X][MAX_SIZE_Y]);
 
+void findSpaceForBackroundItems(levelEntity*);
+
+/**
+Locate the spaces between shooting points.
+*/
+void findSpaceForBackroundItems(levelEntity *level) {
+	const int spaces = level->shootings + 1;
+	spaceList[spaces] = {'\0'};
+	int nextSpaceStart = 0;
+	const int startX = 1;
+	const int endX = level->trackX - 1;
+	for (int i = 0; i < level->shootings; i++) {
+		spaceForBackgroundItem space = { startX, 0, endX, 0};
+		space.startY = nextSpaceStart;
+		space.endY = level->shootingList[i].posY - 1;	// GIVE SPACE FOR TABLES
+		space.sizeY = space.endY - space.startY;
+		spaceList[i] = space;
+		nextSpaceStart = level->shootingList[i].posY + 6;	// GIVE SPACE FOR TABLES
+	}
+	if (nextSpaceStart < level->sizeY - 1) {
+		spaceForBackgroundItem space = { startX, nextSpaceStart, endX, level->sizeY - 1};
+		spaceList[spaces -1] = space;
+	}
+}
+
 void populateBackground(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y]) {
 	generateSky(level, gameScreen); 
 	generateGround(level, gameScreen);
-	// populate background with this and that	
-	for (int i = 0; i < level->sizeY; i++) {
-		if (i == 1) { // populate buildings
-			addHouses(level, gameScreen, i);
+	// check where is the space
+	findSpaceForBackroundItems(level);
+	const int noOfSpaces = level->shootings +1;
+	// Populate buildings etc to empty spaces. 
+	for (int i = 0; i < noOfSpaces; i++) { 
+		if (i == 0) { // start area
+			int posNext = spaceList[i].startY;
+			int spaceLeft = spaceList[i].sizeY;
+			if (spaceLeft > 20) {
+				const int posThis = posNext;
+				posNext = addSpectatorArea(level, gameScreen, posThis);
+				spaceLeft -= (posNext - posThis);
+			}
+			if (spaceLeft > 6) {
+				const int posThis = posNext;
+				posNext = addHouses(level, gameScreen, posThis);
+				spaceLeft -= (posNext - posThis);
+			}
+			if (spaceLeft > 6) {
+				const int posThis = posNext;
+				posNext = addWarehouse(level, gameScreen, posThis);
+				spaceLeft -= (posNext - posThis);
+			}
+			if (spaceLeft > 7) {
+				const int posThis = posNext;
+				posNext = addForrest(level, gameScreen, posThis +1);
+				spaceLeft -= (posNext - posThis);
+			}
+			if (spaceLeft > 2) {
+				const int posThis = posNext;
+				posNext = addTree(level, gameScreen, posThis + 1);
+				spaceLeft -= (posNext - posThis);
+			}
+			if (spaceLeft > 2) {
+				const int posThis = posNext;
+				posNext = addTree(level, gameScreen, posThis + 1);
+				spaceLeft -= (posNext - posThis);
+			}
+		} else if (i == noOfSpaces - 1) { // goal area
+			int posPrev = spaceList[i].endY;
+			int spaceLeft = spaceList[i].sizeY;
+			bool first = true;
+			if (spaceLeft > 16) {
+				const int posThis = posPrev - 17;
+				posPrev -= addBigSpectatorArea(level, gameScreen, posThis);
+				spaceLeft -= (posThis - posPrev);
+			}
+			if (spaceLeft > 7) {
+				const int posThis = posPrev - 8;
+				posPrev -= addSpectatorArea(level, gameScreen, posThis);
+				spaceLeft -= (posThis - posPrev);
+			}
+			if (spaceLeft > 4) {
+				const int posThis = posPrev - 5;
+				posPrev -= addTree(level, gameScreen, posThis);
+				spaceLeft -= (posThis - posPrev);
+			}
 		}
-		else if (i == 6) {
-			addWarehouse(level, gameScreen, i);
+		else if (i == noOfSpaces - 2) { // next to goal area
+			int posPrev = spaceList[i].endY;
+			int spaceLeft = spaceList[i].sizeY;
+			bool first = true;
+			if (spaceLeft > 17) {
+				const int posThis = posPrev - 17;
+				posPrev -= addBigSpectatorArea(level, gameScreen, posThis);
+				spaceLeft -= (posThis - posPrev);
+			}
+			if (spaceLeft > 7) {
+				const int posThis = posPrev - 8;
+				posPrev -= addSpectatorArea(level, gameScreen, posThis);
+				spaceLeft -= (posThis - posPrev);
+			}
+			if (spaceLeft > 4) {
+				const int posThis = posPrev - 4;
+				posPrev -= addTree(level, gameScreen, posThis);
+				spaceLeft -= (posThis - posPrev);
+			}
+			if (spaceLeft > 4) {
+				const int posThis = posPrev - 4;
+				posPrev -= addTree(level, gameScreen, posThis);
+				spaceLeft -= (posThis - posPrev);
+			}
 		}
-		else if (i == 13) { // tree
-			addTree(level, gameScreen, i);
-		}
-		else if (i == 25) { // big forest
-			addBigForrest(level, gameScreen, i);
-		} // spectator areas
-		else if (i == 67) { // long specator area
-			addBigSpectatorArea(level, gameScreen, i);
-		}
-		else if (i == 91) {// short specator area
-			addSpectatorArea(level, gameScreen, i);
+		else { // Here and there
+			int posNext = spaceList[i].startY +1;
+			int spaceLeft = spaceList[i].sizeY -1;
+			if (spaceLeft > 12) {
+				const int posThis = posNext;
+				if (bigForrestPosY == -1) {	// if big forrest is not set yet..
+					posNext = addBigForrest(level, gameScreen, posThis);
+				}
+				else {
+					posNext = addSpectatorArea(level, gameScreen, posThis);
+				}
+				spaceLeft -= (posNext - i);
+			}
+			if (spaceLeft > 7) {
+				const int posThis = posNext;
+				posNext = addForrest(level, gameScreen, posThis + 1);
+				spaceLeft -= (posNext - i);
+			}
+			if (spaceLeft > 2) {
+				const int posThis = posNext;
+				posNext = addTree(level, gameScreen, posThis + 1);
+				spaceLeft -= (posNext - posThis);
+			}
+			if (spaceLeft > 2) {
+				const int posThis = posNext;
+				posNext = addTree(level, gameScreen, posThis + 1);
+				spaceLeft -= (posNext - posThis);
+			}
 		}
 	}
 	populateForeground(level, gameScreen);
@@ -90,14 +210,16 @@ void generateGround(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y
 	bigForrestPosY = -1;	// default not populated
 }
 
-void addTree(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], int posY) {
+// return where is next free slot
+int addTree(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], int posY) {
 	gameScreen[level->trackX - 1][posY] = cSlash;
 	gameScreen[level->trackX - 2][posY] = cSlash;
 	gameScreen[level->trackX - 1][posY+1] = cBackSlash;
 	gameScreen[level->trackX - 2][posY+1] = cBackSlash;
+	return posY + 2;		
 }
-
-void addHouses(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], int posY) {
+// return where is next free slot
+int addHouses(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], int posY) {
 	gameScreen[level->trackX - 2][posY] = cSlash;
 	gameScreen[level->trackX - 1][posY] = cPole;
 	gameScreen[level->trackX - 3][posY+1] = cTop;
@@ -108,9 +230,10 @@ void addHouses(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], in
 	gameScreen[level->trackX - 4][posY+4] = cTop;
 	gameScreen[level->trackX - 3][posY+5] = cBackSlash;
 	gameScreen[level->trackX - 2][posY+5] = cPole;
+	return posY + 6;
 }
-
-void addWarehouse(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], int posY) {
+// return where is next free slot
+int addWarehouse(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], int posY) {
 	gameScreen[level->trackX - 1][posY] = cPole;
 	gameScreen[level->trackX - 2][posY] = cPole;
 	gameScreen[level->trackX - 3][posY + 1] = cTop;
@@ -123,10 +246,11 @@ void addWarehouse(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y],
 	gameScreen[level->trackX - 3][posY + 4] = cTop;
 	gameScreen[level->trackX - 1][posY + 5] = cPole;
 	gameScreen[level->trackX - 2][posY + 5] = cPole;
+	return posY + 6;
 }
-
-void addForrest(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], int posY) {
-	int iRand = 2 * (rand() % 2);		// randomise wich way the forrest will be planted
+// return where is next free slot
+int addForrest(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], int posY) {
+	int iRand = 0; // NOT NECESSARY AT THE MOMENT 2 * (rand() % 2);		// randomise wich way the forrest will be planted
 	for (int i = 0; i < 6; i++) {
 		if ((i + iRand) % 4 == 0) {
 			gameScreen[level->trackX - 1][posY + i] = cSlash;
@@ -145,9 +269,10 @@ void addForrest(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], i
 			gameScreen[level->trackX - 3][posY + i] = cBackSlash;
 		}
 	}
+	return posY + 6;
 }
-
-void addBigForrest(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], int posY) {
+// return where is next free slot
+int addBigForrest(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], int posY) {
 	for (int i = 0; i < 12; i++) {
 		if (i % 4 == 0) {
 			gameScreen[level->trackX - 1][posY + i] = cSlash;
@@ -167,9 +292,10 @@ void addBigForrest(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y]
 		}
 	}
 	bigForrestPosY = posY;
+	return posY + 12;
 }
-
-void addSpectatorArea(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], int posY) {
+// return where is next free slot
+int addSpectatorArea(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], int posY) {
 	for (int i = 0; i < 8; i++) {
 		if (i == 0) {// short specator area
 			gameScreen[level->trackX - 1][posY + i] = cSlash;
@@ -194,9 +320,10 @@ void addSpectatorArea(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE
 			gameScreen[level->trackX - 1][posY + i - 1] = getSpectator(level);
 		}
 	}
+	return posY + 9;
 }
-
-void addBigSpectatorArea(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], int posY) {
+// return where is next free slot
+int addBigSpectatorArea(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y], int posY) {
 	for (int i = 0; i < 17; i++) {
 		if (i == 0 || i == 8) {// short specator area
 			gameScreen[level->trackX - 1][posY + i] = cSlash;
@@ -221,6 +348,7 @@ void addBigSpectatorArea(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_S
 			gameScreen[level->trackX - 1][posY + i - 1] = getSpectator(level);
 		}
 	}
+	return posY + 18;
 }
 
 /*
@@ -270,7 +398,7 @@ char getFlag(levelEntity *level) {
 }
 
 void populateForeground(levelEntity *level, char(&gameScreen)[MAX_SIZE_X][MAX_SIZE_Y]) {
-	if (bigForrestPosY > 0) { 	// add moose + tracks	
+	if (bigForrestPosY > 0) { 	// If big forrest added add moose + tracks	
 		int iRand = rand() % 13;
 		if (iRand == 0) {
 			gameScreen[level->trackX - 3][bigForrestPosY + 4] = cMoose;

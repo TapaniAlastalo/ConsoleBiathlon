@@ -82,4 +82,13 @@ struct levelEntity {
 	scoreEntity score;
 	shootingEntity shootingList [MAX_SHOOTINGS];
 };
+
+struct spaceForBackgroundItem {
+	int startX;
+	int startY;
+	int endX;
+	int endY;
+	int sizeX = endX - startX;
+	int sizeY = endY - startY;
+};
 #endif //HEADER_H
