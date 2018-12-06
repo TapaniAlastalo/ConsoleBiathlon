@@ -46,7 +46,7 @@ int newGame() {
 }
 
 void checkResults(levelEntity *game){
-	const int scoreDelay = 200;
+	const int scoreDelay = 100;
 	Sleep(scoreDelay);
 	if (game->finished) {
 		__int64 delta = time.getDifferenceInMillis();

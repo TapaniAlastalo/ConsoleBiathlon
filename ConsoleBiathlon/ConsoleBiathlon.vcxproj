@@ -157,6 +157,7 @@
     <ClInclude Include="TimeHandler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BackgroundBuilder.cpp" />
     <ClCompile Include="ConsoleBiathlon.cpp" />
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="pch.cpp">

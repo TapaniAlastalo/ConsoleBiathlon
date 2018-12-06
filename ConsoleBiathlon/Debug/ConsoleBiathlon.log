@@ -1,3 +1,6 @@
-﻿  GamePlay.cpp
-d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\gameplay.cpp(161): warning C4101: 'iRand': unreferenced local variable
+﻿  BackgroundBuilder.cpp
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\backgroundbuilder.cpp(324): warning C4018: '<': signed/unsigned mismatch
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\backgroundbuilder.cpp(327): warning C4018: '<': signed/unsigned mismatch
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\backgroundbuilder.cpp(332): warning C4018: '<': signed/unsigned mismatch
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\backgroundbuilder.cpp(335): warning C4018: '<': signed/unsigned mismatch
   ConsoleBiathlon.vcxproj -> D:\Koodaus\Microsoft Visual Studio\Repos\ConsoleBiathlon\Debug\ConsoleBiathlon.exe
