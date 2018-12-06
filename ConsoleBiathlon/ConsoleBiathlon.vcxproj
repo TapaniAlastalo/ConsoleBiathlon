@@ -159,6 +159,7 @@
   <ItemGroup>
     <ClCompile Include="BackgroundBuilder.cpp" />
     <ClCompile Include="ConsoleBiathlon.cpp" />
+    <ClCompile Include="FileHandler.cpp" />
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -14,13 +14,15 @@ const int defaultSizeY = MAX_SIZE_Y;	// 100
 const int defaultTrackX = 6;			// Track level on screen
 
 const int PENALTY_S = 10; // 10 seconds per miss;
-const int BONUS_S = 2; // 2 seconds per bonus hit
-const __int64 MAX_POINTS = 100000; // ALMOST MAX POINTS..
+const int BONUS_S = 3; // 3 seconds per bonus hit
+const int MAX_POINTS = 100000; // ALMOST MAX POINTS..
+const int BASE_POINTS = 20000;
 
 bool shootFromHipAllowed = true;
 
 TimeHandler time;
 
+void readySetGo(void);
 int play(levelEntity*);
 levelEntity prepare(void);
 levelEntity createLevel(void);
@@ -32,61 +34,62 @@ void playerMove(levelEntity*, int, int);
 void raise(playerEntity*);
 void lower(playerEntity*);
 // check score
-void checkResults(levelEntity*);
+scoreEntity checkResults(levelEntity*);
 // for printing
 void updateScreen(levelEntity*);
 void clearGameScreen(levelEntity*);
 
-int newGame() {
+scoreEntity newGame() {
 	levelEntity game = prepare();
 	play(&game);
-	checkResults(&game);
+	scoreEntity score = checkResults(&game);
 	pause();
-	return 0;
+	return score;
 }
 
-void checkResults(levelEntity *game){
+scoreEntity checkResults(levelEntity *game){
 	const int scoreDelay = 100;
 	Sleep(scoreDelay);
 	if (game->finished) {
-		__int64 delta = time.getDifferenceInMillis();
+		const __int64 delta = time.getDifferenceInMillis();
 		game->score.time = delta;
-		cout << endl << "TIME: " << game->score.time << endl;
+		cout << endl << "TIME: " << time.getHumanReadableTime(delta) << endl;
+
+		Sleep(scoreDelay);
+
+		float shootingPercentage = float(game->score.hits) / float(game->score.hits + game->score.misses) * 100;
+		cout << "HITS: " << game->score.hits;
+		Sleep(scoreDelay);
+		cout << ", Shooting Accuracy " << shootingPercentage << "%" << endl;
+
+		const int minuses = (game->score.misses * PENALTY_S) * 1000;
+		Sleep(scoreDelay);
+		cout << "MISSES: " << PENALTY_S << " seconds * ";
+		Sleep(2 * scoreDelay);
+		cout << game->score.misses;
+		Sleep(scoreDelay);
+		cout << " = " << minuses / 1000 << " seconds" << endl;
+
+		const int bonuses = (game->score.bonuses * BONUS_S) * 1000;
+		if (bonuses > 0) {
+			Sleep(scoreDelay);
+			cout << "BONUS: " << BONUS_S << " seconds * ";
+			Sleep(2 * scoreDelay);
+			cout << game->score.bonuses;
+			Sleep(scoreDelay);
+			cout << " = " << (bonuses / 1000) << " seconds" << endl;
+		}
+		const int score = MAX_POINTS - (game->score.time) - minuses + bonuses + BASE_POINTS;
+		Sleep(2 * scoreDelay);
+		cout << "SCORE: " << score << endl;
+		game->score.points = score;
+		return game->score;
 	}
 	else {
 		game->score.time = -1;
 		cout << endl << "DNS" << endl;
+		return NULL;
 	}
-	Sleep(scoreDelay);
-
-	float shootingPercentage = float (game->score.hits) / float (game->score.hits + game->score.misses) * 100;
-	cout << "HITS: " << game->score.hits;
-	Sleep(scoreDelay);
-	cout << ", Shooting Accuracy " << shootingPercentage << "%" << endl;
-
-	const __int64 minuses = (game->score.misses * PENALTY_S) * 1000;
-	Sleep(scoreDelay);
-	cout << "MISSES: " << PENALTY_S << " seconds * ";
-	Sleep(2*scoreDelay);
-	cout << game->score.misses;
-	Sleep(scoreDelay);
-	cout << " = " << minuses / 1000 << " seconds" << endl;
-
-	const __int64 bonuses = (game->score.bonuses * BONUS_S) * 1000;
-	if (bonuses > 0) {
-		Sleep(scoreDelay);
-		cout << "BONUS: " << BONUS_S << " seconds * ";
-		Sleep(2 * scoreDelay);
-		cout << game->score.bonuses;
-		Sleep(scoreDelay);
-		cout << " = " << (bonuses / 1000) << " seconds" << endl;
-	}
-	
-	const __int64 score = MAX_POINTS - (game->score.time) - minuses + bonuses;
-	Sleep(2*scoreDelay);
-	cout << "SCORE: " << score << endl;
-
-	// TEST cout << "MAX POINTS: " << MAX_POINTS << endl;
 }
 
 levelEntity prepare() {
@@ -95,11 +98,29 @@ levelEntity prepare() {
 	return newGame;
 }
 
+void readySetGo() {
+	int sleepDuration = 20;
+	int input = 0;
+	cout << endl << "READY. ( Press any key )" << endl;
+	while (input == 0 || input == 224) {
+		input = _getch();
+	}
+	input = 0;
+	cout << endl << "SET.. ( Press any key )" << endl;
+	while (input == 0 || input == 224) {
+		input = _getch();
+	}
+	cout << endl << "GO..." << endl;
+	Sleep(sleepDuration);
+}
+
 int play(levelEntity *game)
 {
 	updateScreen(game);
+	cout << endl << "Move using the arrow keys (>>, up-up, down-down) and shoot by letters shown on tables. ( Quit ESC )" << endl;
 	bool bUpdateScreen;
 	int input = 0;
+	readySetGo();
 	time.start();		// START TAKING TIME
 	while (input != 27 && !game->finished) {
 		input = _getch();
@@ -127,11 +148,18 @@ int play(levelEntity *game)
 		}
 		if (bUpdateScreen) {
 			updateScreen(game);
+			cout << endl << "TIME: " << time.getHumanReadableTime(time.getIntervalInMillis()) << endl;
+			cout << endl << "Move using the arrow keys (>>, up-up, down-down) and shoot by letters shown on tables. ( Quit ESC )" << endl;
 		}
 	}
 	checkPassedShootingTables(game);
 	if (game->finished) {
-		game->player.character = cWinner;
+		if (game->score.misses > 2) {
+			game->player.character = cLay;
+		}
+		else {
+			game->player.character = cWinner;
+		}
 	}
 	updateScreen(game);
 	return 0;

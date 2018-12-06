@@ -3,6 +3,7 @@
 #include <ctime>
 #include <iostream>
 #include <chrono>
+#include <string>
 
 using namespace std;
 
@@ -72,4 +73,46 @@ __int64 TimeHandler::getIntervalInMillis() {
 */
 __int64 TimeHandler::epoch() {
 	return (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+}
+
+/**
+* Get time in human readable form MM:SS.ss
+*/
+string TimeHandler::getHumanReadableTime(__int64 timeInMillis) {
+	string value = "";
+	__int64 hundreds = (timeInMillis / 10) % 100;
+	__int64 seconds = timeInMillis / 1000;
+	__int64 minutes = seconds / 60;
+	if (minutes > 0) {
+		string mhelp;
+		string shelp;
+		if (minutes > 9) {
+			mhelp = to_string(minutes);
+		}
+		else {
+			string h = "0";
+			mhelp = "0" + to_string(minutes);
+		}
+		seconds -= (minutes * 60);
+		value += mhelp;
+		if (seconds > 9) {
+			shelp = ":" + to_string(seconds);
+		}
+		else {
+			shelp = ":0" + to_string(seconds);
+		}
+		const string sh = "." + to_string(hundreds);
+		value += shelp + sh;
+	}
+	else {
+		string shelp;
+		if (seconds > 9) {
+			shelp = "0:" + to_string(seconds);
+		} else {
+			shelp = "0:0" + to_string(seconds);
+		}
+		const string sh = "." + to_string(hundreds);
+		value += shelp + sh;
+	}
+	return value;
 }

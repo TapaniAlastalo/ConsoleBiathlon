@@ -51,13 +51,17 @@ void populateShootingPositions(levelEntity *level) {
 			gameScreen[shooting.shootingTableX][shooting.shootingTableY + 2] = shooting.char2;
 			gameScreen[shooting.shootingTableX][shooting.shootingTableY + 3] = shooting.char3;
 		}
-		/*else if (shooting.char1 == cHit || shooting.char1 == cMiss || shooting.char1 == cHipHit) {
-			gameScreen[shooting.shootingTableY][shooting.shootingTableX + 1] = shooting.char1;
-		} else if (shooting.char2 == cHit || shooting.char2 == cMiss || shooting.char2 == cHipHit) {
-			gameScreen[shooting.shootingTableY][shooting.shootingTableX + 2] = shooting.char2;
-		} else if (shooting.char3 == cHit || shooting.char3 == cMiss || shooting.char3 == cHipHit) {
-			gameScreen[shooting.shootingTableY][shooting.shootingTableX + 3] = shooting.char3;
-		}*/
+		if (game.finished) {
+			if (shooting.char1 == cHit || shooting.char1 == cMiss || shooting.char1 == cHipHit) {
+				gameScreen[shooting.shootingTableX][shooting.shootingTableY + 1] = shooting.char1;
+			}
+			if (shooting.char2 == cHit || shooting.char2 == cMiss || shooting.char2 == cHipHit) {
+				gameScreen[shooting.shootingTableX][shooting.shootingTableY + 2] = shooting.char2;
+			}
+			if (shooting.char3 == cHit || shooting.char3 == cMiss || shooting.char3 == cHipHit) {
+				gameScreen[shooting.shootingTableX][shooting.shootingTableY + 3] = shooting.char3;
+			}
+		}
 	}
 }
 
@@ -107,7 +111,6 @@ void printScreen(levelEntity *level) {
 		}
 		cout << endl;
 	}
-	cout << endl << "Move using the arrow keys (>>, up-up, down-down), Quit ESC " << endl;
 }
 
 void clearGameScreen(levelEntity *level) {
@@ -120,7 +123,3 @@ void clearGameScreen(levelEntity *level) {
 		}
 	}
 }
-
-/*
-	while (!_kbhit()) { // Odotetaan käyttäjän inputtia
-}*/

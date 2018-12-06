@@ -3,6 +3,9 @@
 #ifndef TIMEHANDLER_H
 #define TIMEHANDLER_H
 
+#include <iostream>
+#include <string>
+
 class TimeHandler {
 private:
 	__int64 startTime;
@@ -17,5 +20,6 @@ public:
 	__int64 getInterval();
 	__int64 getIntervalInMillis();
 	__int64 epoch();
+	std::string getHumanReadableTime(__int64);
 };
 #endif

@@ -3,10 +3,6 @@
 #ifndef HEADER_H
 #define HEADER_H
 
-#include <iostream>
-#include <string>
-#include <cstring>
-
 const char cHipHit = 'B';
 const char cHit = 'O';
 const char cMiss = 'X';
@@ -70,6 +66,7 @@ struct scoreEntity {
 	int bonuses;
 	int hits;
 	int misses;
+	__int64 points;
 };
 
 struct levelEntity {
