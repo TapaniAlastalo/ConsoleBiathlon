@@ -4,9 +4,7 @@
 
 using namespace std;
 
-void loadScoresFromFile(scoreEntity*, int*);
 void addToScores(scoreEntity*, scoreEntity, int*);
-void saveScoresToFile(scoreEntity*, int*);
 
 const string fileName = "scores.txt";
 

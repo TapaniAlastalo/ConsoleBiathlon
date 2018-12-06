@@ -83,13 +83,14 @@ scoreEntity checkResults(levelEntity *game){
 		Sleep(2 * scoreDelay);
 		cout << "SCORE: " << score << endl;
 		game->score.points = score;
-		return game->score;
 	}
 	else {
-		game->score.time = -1;
+		//cout << endl << "TIME: " << time.getHumanReadableTime(time.getIntervalInMillis) << endl;
 		cout << endl << "DNS" << endl;
-		return NULL;
+		game->score.time = -1;
+		game->score.points = -1;	
 	}
+	return game->score;
 }
 
 levelEntity prepare() {
