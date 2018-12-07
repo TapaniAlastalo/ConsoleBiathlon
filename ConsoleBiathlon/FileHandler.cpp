@@ -1,35 +1,38 @@
 #include "pch.h"
 #include "Header.h"
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
-void addToScores(scoreEntity*, scoreEntity, int*);
+int addToScores(scoreEntity*, scoreEntity, int);
 
-const string fileName = "scores.txt";
+const string fileName = "scores.dat";
 
-void loadScoresFromFile(scoreEntity *scores, int *scoresSize) {
+int loadScoresFromFile(scoreEntity *scores, int scoresSize) {
 	ifstream in(fileName, ios_base::binary || ios_base::app);
 	if (in.is_open()) {
 		while (in.peek() != EOF) {
 			scoreEntity score;
 			in.read((char *)&score, sizeof(scoreEntity));
-			addToScores(scores, score, scoresSize);
+			scoresSize = addToScores(scores, score, scoresSize);
 		}
 		in.close();
 	}
+	return scoresSize;
 }
 
-void addToScores(scoreEntity *scores, scoreEntity score, int *scoresSize) {
-	scores[*scoresSize] = score;
-	(*scoresSize)++;
+int addToScores(scoreEntity *scores, scoreEntity score, int scoresSize) {
+	std::cout << endl << "addtoscores size " << scoresSize;
+	scores[scoresSize] = score;
+	scoresSize++;
+	return scoresSize;
 }
 
-void saveScoresToFile(scoreEntity *scores, int *scoresSize) {
-	ofstream out(fileName, ios_base::binary);
+void saveScoresToFile(scoreEntity *scores, int scoresSize) {
+	ofstream out(fileName, ios_base::binary);	// ::app would append. No need for that..
 	if (out.is_open()) {
-		const int size = *scoresSize;
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < scoresSize; i++) {
 			const scoreEntity score = scores[i];
 			out.write((char *)&score, sizeof(scoreEntity));
 		}

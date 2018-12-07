@@ -5,6 +5,6 @@ using namespace std;
 
 void startScreen(void);
 
-void startScreen() { // show start screen
+void startScreen() { // show start screen // nothing yet
 }
 

@@ -1,2 +1,6 @@
 ﻿  ConsoleBiathlon.cpp
+  FileHandler.cpp
+  ScoreHandler.cpp
+  StartScreen.cpp
+  Generating Code...
   ConsoleBiathlon.vcxproj -> D:\Koodaus\Microsoft Visual Studio\Repos\ConsoleBiathlon\Debug\ConsoleBiathlon.exe
