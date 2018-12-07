@@ -1,6 +1,3 @@
 ﻿  ConsoleBiathlon.cpp
-  FileHandler.cpp
-  ScoreHandler.cpp
-  StartScreen.cpp
-  Generating Code...
+d:\koodaus\microsoft visual studio\repos\consolebiathlon\consolebiathlon\consolebiathlon.cpp(38): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   ConsoleBiathlon.vcxproj -> D:\Koodaus\Microsoft Visual Studio\Repos\ConsoleBiathlon\Debug\ConsoleBiathlon.exe
